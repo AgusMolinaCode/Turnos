@@ -1,4 +1,4 @@
-import ClientForm from "@/components/forms/ClientForm";
+import { ClientForm } from "@/components/forms/ClientForm";
 import { ModeToggle } from "@/components/ModeToggle";
 import Link from "next/link";
 
