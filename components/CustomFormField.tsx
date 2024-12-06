@@ -5,6 +5,7 @@ import ReactDatePicker from "react-datepicker";
 import { Control } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
 import "react-datepicker/dist/react-datepicker.css";
+import 'react-phone-number-input/style.css';
 
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -89,7 +90,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             withCountryCallingCode
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
-            className="input-phone"
+            className="input-phone flex"
           />
         </FormControl>
       );

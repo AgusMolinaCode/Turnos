@@ -53,7 +53,7 @@ export const ClientForm = () => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex-1 space-y-6"
+        className="flex flex-col justify-center items-center mx-auto "
       >
         <section className="mb-12 space-y-4">
           <h1 className="text-7xl font-black">
@@ -94,7 +94,7 @@ export const ClientForm = () => {
           />
         </div>
 
-        <SubmitButton isLoading={isLoading}>Get Started</SubmitButton>
+        <SubmitButton className="mt-8" isLoading={isLoading}>Get Started</SubmitButton>
       </form>
     </Form>
   );
