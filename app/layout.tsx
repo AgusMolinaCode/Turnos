@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Roboto, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
+import ThemeWrapper from "@/components/ThemeWrapper";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -9,13 +10,6 @@ const roboto = Roboto({
   weight: ["300", "400", "500", "700", "900"],
   style: "italic",
 });
-
-// const bebasNeue = Bebas_Neue({
-//   subsets: ["latin"],
-//   display: "swap",
-//   weight: ["400", "700"], // Ajusta los pesos según lo necesario
-//   style: "normal", // Bebas Neue no tiene estilo itálico
-// });
 
 export const metadata: Metadata = {
   title: "Turnos",
@@ -29,14 +23,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="es" suppressHydrationWarning>
-      <body className={`${roboto.className} antialiased`}>
+      <body className={`${roboto.className} antialiased relative`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
+          defaultTheme="dark"
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <ThemeWrapper>
+            {children}
+          </ThemeWrapper>
         </ThemeProvider>
       </body>
     </html>
