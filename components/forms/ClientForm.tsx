@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { LucidePhone } from "lucide-react";
 
 import { Form } from "@/components/ui/form";
 import { createUser } from "@/lib/actions/client.actions";

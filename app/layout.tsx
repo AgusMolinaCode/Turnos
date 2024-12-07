@@ -3,6 +3,8 @@ import { Roboto, Bebas_Neue } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import ThemeWrapper from "@/components/ThemeWrapper";
+import Link from "next/link";
+import { ModeToggle } from "@/components/ModeToggle";
 
 const roboto = Roboto({
   subsets: ["latin"],
@@ -31,6 +33,15 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemeWrapper>
+            <div className="flex justify-around items-center pt-4 py-20">
+              <Link className="text-2xl font-semibold" href="/">
+                Home
+              </Link>
+              <div className="flex items-center gap-2 dark:text-gray-400 text-gray-600">
+                <Link href="/?admin=true"> Admin </Link>
+                <ModeToggle />
+              </div>
+            </div>
             {children}
           </ThemeWrapper>
         </ThemeProvider>
