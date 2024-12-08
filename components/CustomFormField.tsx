@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import { E164Number } from "libphonenumber-js/core";
-import Image from "next/image";
 import ReactDatePicker from "react-datepicker";
 import { Control } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
@@ -18,7 +17,6 @@ import {
 import { Input } from "./ui/input";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
-import DatePicker from "react-datepicker";
 import { LucideIcon } from "lucide-react";
 
 export enum FormFieldType {
@@ -106,23 +104,19 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
       );
     case FormFieldType.DATE_PICKER:
       return (
-        <div className="">
-          <Image
-            src="/assets/icons/calendar.svg"
-            height={24}
-            width={24}
-            alt="user"
-            className="ml-2"
-          />
+        <div className="flex items-center relative w-full">
+          {props.icon && (
+            <props.icon className="ml-2 h-5 w-5 absolute z-10" />
+          )}
           <FormControl>
-            <DatePicker
+            <ReactDatePicker
               selected={field.value}
               onChange={(date) => field.onChange(date)}
               dateFormat={dateFormat ?? "dd/MM/yyyy"}
-              showTimeSelect={showTimeSelect ?? false}
-         
+              showTimeSelect={showTimeSelect ?? false}   
               timeInputLabel="Time:"
-              wrapperClassName=""
+              wrapperClassName="w-full"
+              className="pl-9 w-full bg-transparent h-9 border border-input rounded-md px-3 py-1"
             />
           </FormControl>
         </div>

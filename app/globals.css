@@ -37,19 +37,19 @@
 }
 
 .react-datepicker__input-container input {
-  background-color: #1a1d21 !important;
+  /* background-color: #1a1d21 !important; */
   width: 100%;
   outline: none;
 }
 
 .react-datepicker__day--selected {
-  background-color: #24ae7c !important;
+  background-color: #3731ad !important;
   color: #ffffff !important;
   border-radius: 4px;
 }
 
 .react-datepicker__time-list-item--selected {
-  background-color: #24ae7c !important;
+  background-color: #3731ad !important;
 }
 
 .react-datepicker__time-container {
@@ -85,10 +85,6 @@
   font-size: 14px;
   font-weight: 500;
 }
-
-
-
-
 
 .PhoneInputInput::placeholder {
   color: #1a1d21;

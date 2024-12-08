@@ -1,42 +1,31 @@
 export const Abogados = [
   {
-    image: "/assets/images/abogado-green.png",
+    image: "/assets/images/user2.png",
     name: "Juan Pérez",
   },
   {
-    image: "/assets/images/abogado-cameron.png",
+    image: "/assets/images/user1.png",
     name: "María García",
   },
   {
-    image: "/assets/images/abogado-livingston.png",
+    image: "/assets/images/user3.png",
     name: "Carlos Rodríguez",
   },
   {
-    image: "/assets/images/abogado-peter.png",
+    image: "/assets/images/user5.png",
     name: "Ana Martínez",
   },
   {
-    image: "/assets/images/abogado-powell.png",
+    image: "/assets/images/user4.png",
     name: "Luis Hernández",
   },
   {
-    image: "/assets/images/abogado-ramirez.png",
+    image: "/assets/images/user6.png",
     name: "Carmen López",
   },
   {
-    image: "/assets/images/abogado-lee.png",
-    name: "José González",
-  },
-  {
-    image: "/assets/images/abogado-cruz.png",
+    image: "/assets/images/user7.png",
     name: "Laura Sánchez",
   },
-  {
-    image: "/assets/images/abogado-sharma.png",
-    name: "Miguel Ramírez",
-  },
-  {
-    image: "/assets/images/abogado-diaz.png",
-    name: "Sofía Díaz",
-  },
+
 ];

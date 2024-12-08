@@ -9,7 +9,7 @@ import { z } from "zod";
 
 import { Form, FormControl } from "@/components/ui/form";
 import { createUser, registerUser } from "@/lib/actions/client.actions";
-import { ClientFormValidation, UserFormValidation } from "@/lib/validation";
+import { ClientFormValidation } from "@/lib/validation";
 
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
@@ -17,7 +17,7 @@ import { SelectItem } from "../ui/select";
 import { Abogados } from "@/constants";
 import { FileUploader } from "../FileUploader";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { User, Mail, ClipboardList } from "lucide-react";
+import { User, Mail, ClipboardList, Calendar, KeySquare } from "lucide-react";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -90,7 +90,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
       </CardHeader>
       <CardContent>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
               <CustomFormField
                 fieldType={FormFieldType.INPUT}
@@ -112,51 +112,48 @@ export const RegisterForm = ({ user }: { user: User }) => {
                 iconAlt="email"
               />
             </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-2 md:pt-4">
+              <CustomFormField
+                fieldType={FormFieldType.PHONE_INPUT}
+                control={form.control}
+                name="phone"
+                label="Phone number"
+                placeholder="(555) 123-4567"
+              />
 
-            <CustomFormField
-              fieldType={FormFieldType.PHONE_INPUT}
-              control={form.control}
-              name="phone"
-              label="Phone number"
-              placeholder="(555) 123-4567"
-            />
+              <CustomFormField
+                fieldType={FormFieldType.DATE_PICKER}
+                control={form.control}
+                name="birthDate"
+                label="Fecha de nacimiento"
+                icon={Calendar}
+                iconAlt="calendar"
+              />
+            </div>
 
-            <CustomFormField
-              fieldType={FormFieldType.DATE_PICKER}
-              control={form.control}
-              name="birthDate"
-              label="Fecha de nacimiento"
-            />
-
-            <CustomFormField
-              fieldType={FormFieldType.SELECT}
-              control={form.control}
-              name="primaryProfessional"
-              label="Primary Professional"
-              placeholder="Select a professional"
-            >
-              {Abogados.map((abogado, i) => (
-                <SelectItem key={abogado.name + i} value={abogado.name}>
-                  <div className="flex cursor-pointer items-center gap-2">
-                    <Image
-                      src={abogado.image}
-                      width={32}
-                      height={32}
-                      alt="abogado"
-                      className="rounded-full border border-dark-500"
-                    />
-                    <p>{abogado.name}</p>
-                  </div>
-                </SelectItem>
-              ))}
-            </CustomFormField>
-
-            {/* TODO Identificacion */}
-
-            <section className="space-y-6">
-              <div className="mb-9 space-y-1">
-                <h2 className="sub-header">Identificación y Verificación</h2>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-2 pt-2 md:pt-4">
+              <CustomFormField
+                fieldType={FormFieldType.SELECT}
+                control={form.control}
+                name="primaryProfessional"
+                label="Profesional"
+                placeholder="Selecciona un profesional"
+              >
+                {Abogados.map((abogado, i) => (
+                  <SelectItem key={abogado.name + i} value={abogado.name}>
+                    <div className="flex cursor-pointer items-center gap-2">
+                      <Image
+                        src={abogado.image}
+                        width={32}
+                        height={32}
+                        alt="abogado"
+                        className="rounded-full border border-dark-500"
+                      />
+                      <p>{abogado.name}</p>
+                    </div>
+                  </SelectItem>
+                ))}
+              </CustomFormField>
 
               <CustomFormField
                 fieldType={FormFieldType.INPUT}
@@ -164,8 +161,12 @@ export const RegisterForm = ({ user }: { user: User }) => {
                 name="documentoDni"
                 label="DNI"
                 placeholder="12345678"
+                icon={KeySquare}
+                iconAlt="dni"
               />
+            </div>
 
+            <div className="pt-2 md:pt-4">
               <CustomFormField
                 fieldType={FormFieldType.SKELETON}
                 control={form.control}
@@ -180,7 +181,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
                   </FormControl>
                 )}
               />
-            </section>
+            </div>
 
             <section className="space-y-6">
               <div className="mb-9 space-y-1">
