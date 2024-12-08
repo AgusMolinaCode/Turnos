@@ -13,6 +13,17 @@ import { UserFormValidation } from "@/lib/validation";
 import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+
+import { User, Mail } from "lucide-react";
+
 export const ClientForm = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -49,52 +60,53 @@ export const ClientForm = () => {
   };
 
   return (
-    <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col justify-center items-center mx-auto "
-      >
-        <section className="mb-12 space-y-4">
-          <h1 className="text-7xl font-black">
-            Turnos<span className="text-4xl">.AI</span>
-          </h1>
-          <p className="text-dark-700">
-            Registrate y obtené tu turno en minutos
-          </p>
-        </section>
+    <Card className="max-w-[340px] mx-auto bg-white/90 dark:bg-black/50 backdrop-blur-md border border-white/20 shadow-lg">
+      <CardHeader>
+        <CardTitle>
+          <h2 className="text-2xl font-bold text-dark-800">
+            Registrate y pedí tu turno
+          </h2>
+        </CardTitle> 
+      </CardHeader>
+      <CardContent>
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="flex flex-col justify-center mx-auto space-y-4 w-full"
+          >
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="name"
+              label="Full name"
+              placeholder="John Doe"
+              icon={User}
+            />
 
-        <div>
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name="name"
-            label="Full name"
-            placeholder="John Doe"
-            iconSrc="/assets/icons/user.svg"
-            iconAlt="user"
-          />
+            <CustomFormField
+              fieldType={FormFieldType.INPUT}
+              control={form.control}
+              name="email"
+              label="Email"
+              placeholder="johndoe@gmail.com"
+              icon={Mail}
+            />
 
-          <CustomFormField
-            fieldType={FormFieldType.INPUT}
-            control={form.control}
-            name="email"
-            label="Email"
-            placeholder="johndoe@gmail.com"
-            iconSrc="/assets/icons/email.svg"
-            iconAlt="email"
-          />
+            <CustomFormField
+              fieldType={FormFieldType.PHONE_INPUT}
+              control={form.control}
+              name="phone"
+              label="Phone number"
+              placeholder="(555) 123-4567"
+            />
 
-          <CustomFormField
-            fieldType={FormFieldType.PHONE_INPUT}
-            control={form.control}
-            name="phone"
-            label="Phone number"
-            placeholder="(555) 123-4567"
-          />
-        </div>
-
-        <SubmitButton className="mt-8" isLoading={isLoading}>Get Started</SubmitButton>
-      </form>
-    </Form>
+            <SubmitButton className="mt-4 w-full" isLoading={isLoading}>
+              Get Started
+            </SubmitButton>
+          </form>
+        </Form>
+      </CardContent>
+      
+    </Card>
   );
 };

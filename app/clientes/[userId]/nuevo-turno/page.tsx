@@ -2,7 +2,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div>nuevo turno!</div>
+    <div className='px-2'>nuevo turno!</div>
   )
 }
 

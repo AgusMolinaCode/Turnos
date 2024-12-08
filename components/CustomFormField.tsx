@@ -19,6 +19,7 @@ import { Input } from "./ui/input";
 import { Select, SelectContent, SelectTrigger, SelectValue } from "./ui/select";
 import { Textarea } from "./ui/textarea";
 import DatePicker from "react-datepicker";
+import { LucideIcon } from "lucide-react";
 
 export enum FormFieldType {
   INPUT = "input",
@@ -35,7 +36,7 @@ interface CustomProps {
   name: string;
   label?: string;
   placeholder?: string;
-  iconSrc?: string;
+  icon?: LucideIcon;
   iconAlt?: string;
   disabled?: boolean;
   dateFormat?: string;
@@ -50,21 +51,15 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
   switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
-        <div className="">
-          {props.iconSrc && (
-            <Image
-              src={props.iconSrc}
-              height={24}
-              width={24}
-              alt={props.iconAlt || "icon"}
-              className="ml-2"
-            />
+        <div className="flex items-center relative w-full">
+          {props.icon && (
+            <props.icon className="ml-2 h-5 w-5 absolute" />
           )}
           <FormControl>
             <Input
               placeholder={props.placeholder}
               {...field}
-              className="shad-input border-0"
+              className="pl-9 w-full"
             />
           </FormControl>
         </div>
@@ -90,7 +85,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
             withCountryCallingCode
             value={field.value as E164Number | undefined}
             onChange={field.onChange}
-            className="input-phone flex"
+            className="input-phone "
           />
         </FormControl>
       );
@@ -168,7 +163,7 @@ const CustomFormField = (props: CustomProps) => {
           )}
           <RenderInput field={field} props={props} />
 
-          <FormMessage />
+          <FormMessage className="dark:text-red-400 text-red-600"/>
         </FormItem>
       )}
     />
