@@ -18,6 +18,7 @@
   background-color: #1a1d21 !important;
   border-color: #363a3d !important;
   color: #abb8c4 !important;
+  z-index: 6;
 }
 
 .react-datepicker__current-month,

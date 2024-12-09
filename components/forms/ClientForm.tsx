@@ -101,7 +101,7 @@ export const ClientForm = () => {
             />
 
             <SubmitButton className="mt-4 w-full" isLoading={isLoading}>
-              Get Started
+              Enviar
             </SubmitButton>
           </form>
         </Form>

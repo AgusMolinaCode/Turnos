@@ -18,6 +18,7 @@ import { Abogados } from "@/constants";
 import { FileUploader } from "../FileUploader";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { User, Mail, ClipboardList, Calendar, KeySquare } from "lucide-react";
+import { FileUpload } from "../ui/file-upload";
 
 export const RegisterForm = ({ user }: { user: User }) => {
   const router = useRouter();
@@ -77,14 +78,14 @@ export const RegisterForm = ({ user }: { user: User }) => {
   };
 
   return (
-    <Card className="max-w-[640px] mx-auto bg-white/90 dark:bg-black/50 backdrop-blur-md border border-white/20 shadow-lg">
+    <Card className="max-w-[640px] mx-auto bg-white/90 dark:bg-black/50 backdrop-blur-md border border-white/20 shadow-lg border-gray-300 dark:border-gray-700">
       <CardHeader>
         <CardTitle>
           <h2 className="text-2xl flex items-center gap-2 font-bold text-dark-800">
             <ClipboardList /> {user.name}
           </h2>
           <p className="text-gray-500 font-normal mt-3">
-            Completa todos los datos para registrar tu turno
+            Completa todos los datos para registrarte como cliente
           </p>
         </CardTitle>
       </CardHeader>
@@ -174,30 +175,21 @@ export const RegisterForm = ({ user }: { user: User }) => {
                 label="Adjunta foto de tu DNI"
                 renderSkeleton={(field) => (
                   <FormControl>
-                    <FileUploader
-                      files={field.value}
-                      onChange={field.onChange}
-                    />
+                    <FileUpload onChange={field.onChange} />
                   </FormControl>
                 )}
               />
             </div>
 
-            <section className="space-y-6">
-              <div className="mb-9 space-y-1">
-                <h2 className="sub-header">Consent and Privacy</h2>
-              </div>
+            <CustomFormField
+              fieldType={FormFieldType.CHECKBOX}
+              control={form.control}
+              name="privacyConsent"
+              label="Doy consentimiento para el uso de mis datos"
+            />
 
-              <CustomFormField
-                fieldType={FormFieldType.CHECKBOX}
-                control={form.control}
-                name="privacyConsent"
-                label="Doy consentimiento para el uso de mis datos"
-              />
-            </section>
-
-            <SubmitButton className="mt-8" isLoading={isLoading}>
-              Get Started
+            <SubmitButton className="mt-8 w-full" isLoading={isLoading}>
+              Enviar
             </SubmitButton>
           </form>
         </Form>

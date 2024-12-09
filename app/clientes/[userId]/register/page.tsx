@@ -6,7 +6,7 @@ const page = async ({ params: { userId } }: SearchParamProps) => {
   const user = await getUser(userId);
 
   return (
-    <div className="px-2">
+    <div className="px-2 py-10">
       <RegisterForm user={user} />
     </div>
   );

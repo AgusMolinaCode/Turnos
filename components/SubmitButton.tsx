@@ -11,7 +11,7 @@ const SubmitButton = ({ isLoading, className, children }: ButtonProps) => {
   return (
     <div>
       <Button type="submit" className={className} disabled={isLoading}>
-        {isLoading ? "Loading..." : children}
+        {isLoading ? "Enviando..." : children}
       </Button>
     </div>
   );

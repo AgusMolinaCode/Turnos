@@ -33,7 +33,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <ThemeWrapper>
-            <div className="flex justify-around items-center pt-4 pb-14 md:pb-20">
+            <div className="flex justify-around items-center pt-4">
               <Link className="text-2xl font-semibold" href="/">
                 <h1 className="text-4xl font-black">
                   Turnos<span className="text-xl">.AI</span>

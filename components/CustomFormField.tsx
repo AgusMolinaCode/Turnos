@@ -90,7 +90,7 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
     case FormFieldType.CHECKBOX:
       return (
         <FormControl>
-          <div className="">
+          <div className="flex gap-2 items-center pt-2 md:pt-4">
             <Checkbox
               id={props.name}
               checked={field.value}
@@ -115,8 +115,8 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
               dateFormat={dateFormat ?? "dd/MM/yyyy"}
               showTimeSelect={showTimeSelect ?? false}   
               timeInputLabel="Time:"
-              wrapperClassName="w-full"
-              className="pl-9 w-full bg-transparent h-9 border border-input rounded-md px-3 py-1"
+              wrapperClassName="w-full z-50"
+              className="pl-9 w-full bg-transparent h-9 border border-input rounded-md px-3 py-1 z-50"
             />
           </FormControl>
         </div>
