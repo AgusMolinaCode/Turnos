@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-vars */
 import { E164Number } from "libphonenumber-js/core";
 import ReactDatePicker from "react-datepicker";
+import { getYear, getMonth } from "date-fns";
 import { Control } from "react-hook-form";
 import PhoneInput from "react-phone-number-input";
 import "react-datepicker/dist/react-datepicker.css";
 import 'react-phone-number-input/style.css';
+import { es } from "date-fns/locale";
 
 import { Checkbox } from "./ui/checkbox";
 import {
@@ -46,6 +47,22 @@ interface CustomProps {
 
 const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
   const { dateFormat, showTimeSelect } = props;
+  const years = Array.from({ length: getYear(new Date()) - 1950 + 1 }, (_, i) => 1950 + i);
+  const months = [
+    "Ene",
+    "Feb",
+    "Mar",
+    "Abr",
+    "May",
+    "Jun",
+    "Jul",
+    "Ago",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dic",
+  ];
+
   switch (props.fieldType) {
     case FormFieldType.INPUT:
       return (
@@ -113,10 +130,63 @@ const RenderInput = ({ field, props }: { field: any; props: CustomProps }) => {
               selected={field.value}
               onChange={(date) => field.onChange(date)}
               dateFormat={dateFormat ?? "dd/MM/yyyy"}
-              showTimeSelect={showTimeSelect ?? false}   
+              showTimeSelect={showTimeSelect ?? false}
               timeInputLabel="Time:"
               wrapperClassName="w-full z-50"
               className="pl-9 w-full bg-transparent h-9 border border-input rounded-md px-3 py-1 z-50"
+              locale={es}
+              renderCustomHeader={({
+                date,
+                changeYear,
+                changeMonth,
+                decreaseMonth,
+                increaseMonth,
+                prevMonthButtonDisabled,
+                nextMonthButtonDisabled,
+              }) => (
+                <div className="flex justify-between items-center px-2 py-1">
+                  <button
+                    onClick={decreaseMonth}
+                    disabled={prevMonthButtonDisabled}
+                  >
+                    {"<"}
+                  </button>
+                  <select
+                    value={getYear(date)}
+                    onChange={({ target: { value } }) =>
+                      changeYear(Number(value))
+                    }
+                    className="mx-2"
+                  >
+                    {years.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <select
+                    value={months[getMonth(date)]}
+                    onChange={({ target: { value } }) =>
+                      changeMonth(months.indexOf(value))
+                    }
+                    className="mx-2"
+                  >
+                    {months.map((option) => (
+                      <option key={option} value={option}>
+                        {option}
+                      </option>
+                    ))}
+                  </select>
+
+                  <button
+                    onClick={increaseMonth}
+                    disabled={nextMonthButtonDisabled}
+                  >
+                    {">"}
+                  </button>
+                </div>
+              )}
             />
           </FormControl>
         </div>

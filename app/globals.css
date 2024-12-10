@@ -6,6 +6,7 @@
 .react-datepicker-wrapper.date-picker {
   display: flex;
   align-items: center;
+  z-index: 5;
 }
 
 .react-datepicker,
@@ -18,7 +19,7 @@
   background-color: #1a1d21 !important;
   border-color: #363a3d !important;
   color: #abb8c4 !important;
-  z-index: 6;
+  z-index: 2;
 }
 
 .react-datepicker__current-month,

@@ -15,7 +15,6 @@ import CustomFormField, { FormFieldType } from "../CustomFormField";
 import SubmitButton from "../SubmitButton";
 import { SelectItem } from "../ui/select";
 import { Abogados } from "@/constants";
-import { FileUploader } from "../FileUploader";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { User, Mail, ClipboardList, Calendar, KeySquare } from "lucide-react";
 import { FileUpload } from "../ui/file-upload";
@@ -68,7 +67,7 @@ export const RegisterForm = ({ user }: { user: User }) => {
       const newClient = await registerUser(clientData);
 
       if (newClient) {
-        router.push(`/clientes/${newClient.$id}/nuevo-turno`);
+        router.push(`/clientes/${user.$id}/nuevo-turno`);
       }
     } catch (error) {
       console.log(error);

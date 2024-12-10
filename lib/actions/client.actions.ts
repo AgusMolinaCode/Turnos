@@ -65,16 +65,6 @@ export const registerUser = async ({
       file = await storage.createFile(BUCKET_ID!, ID.unique(), inputFile);
     }
 
-    console.log(
-      {
-        identificationDocumentId: file?.$id ? file.$id : null,
-        identificationDocumentUrl: file?.$id
-          ? `${ENDPOINT}/storage/buckets/${BUCKET_ID}/files/${file.$id}/view?project=${PROJECT_ID}`
-          : null,
-        ...clientData,
-      }
-    );
-
     const newClient = await databases.createDocument(
       DATABASE_ID!,
       CLIENT_COLLECTION_ID!,
@@ -91,5 +81,22 @@ export const registerUser = async ({
     return parseStringify(newClient);
   } catch (error) {
     console.error("An error occurred while registering user:", error);
+  }
+};
+
+export const getClient = async (userId: string) => {
+  try {
+    const clients = await databases.listDocuments(
+      DATABASE_ID!,
+      CLIENT_COLLECTION_ID!,
+      [Query.equal('userId', [userId])]
+    );
+
+    return parseStringify(clients.documents[0]);
+  } catch (error) {
+    console.error(
+      "An error occurred while retrieving the patient details:",
+      error
+    );
   }
 };
