@@ -1,6 +1,6 @@
-'use server';
+"use server";
 
-import { ID } from "node-appwrite";
+import { ID, Query } from "node-appwrite";
 import {
   DATABASE_ID,
   databases,
@@ -23,12 +23,53 @@ export const crearTurno = async (turno: CreateAppointmentParams) => {
   }
 };
 
-
 export const getTurno = async (turnoId: string) => {
   try {
-    const turno = await databases.getDocument(DATABASE_ID!, TURNOS_COLLECTION_ID!, turnoId);
+    const turno = await databases.getDocument(
+      DATABASE_ID!,
+      TURNOS_COLLECTION_ID!,
+      turnoId
+    );
 
     return parseStringify(turno);
+  } catch (error) {
+    console.error("An error occurred while fetching user:", error);
+  }
+};
+
+export const getTurnosRecientes = async () => {
+  try {
+    const turnos = await databases.listDocuments(
+      DATABASE_ID!,
+      TURNOS_COLLECTION_ID!,
+      [Query.orderDesc("$createdAt")]
+    );
+
+    const initialCounts = {
+      turnos: 0,
+      pending: 0,
+      canceled: 0,
+    };
+
+    const counts = (turnos.documents as any[]).reduce((acc, turno) => {
+      if (turno.status === "scheduled") {
+        acc.turnos += 1;
+      } else if (turno.status === "pending") {
+        acc.pending += 1;
+      } else if (turno.status === "canceled") {
+        acc.canceled += 1;
+      }
+
+      return acc;
+    }, initialCounts);
+
+    const data = {
+      count: turnos.total,
+      ...counts,
+      documents: turnos.documents,
+    };
+
+    return parseStringify(data);
   } catch (error) {
     console.error("An error occurred while fetching user:", error);
   }
