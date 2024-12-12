@@ -38,8 +38,25 @@ declare type SearchParamProps = {
   };
   
   declare type UpdateAppointmentParams = {
-    appointmentId: string;
+    turnoId: string;
     userId: string;
-    appointment: Appointment;
+    turno: Turno;
     type: string;
   };
+  
+  declare type TurnoType = "schedule" | "create" | "cancel";
+  
+  declare interface Turno {
+    $id: string;
+    userId: string;
+    cliente: {
+      id: string;
+      name: string;
+    };
+    primaryProfessional: string;
+    description: string;
+    schedule: Date | string;
+    status: Status;
+    notes?: string;
+    cancelationReason: string | null;
+  }

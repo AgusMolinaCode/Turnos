@@ -2,7 +2,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 interface StatusBadgeProps {
-  status: "pending" | "scheduled" | "cancelled";
+  status: "pending" | "scheduled" | "canceled";
 }
 
 const StatusBadge = ({ status }: StatusBadgeProps) => {
@@ -11,7 +11,7 @@ const StatusBadge = ({ status }: StatusBadgeProps) => {
     {
       "bg-yellow-100 text-yellow-800": status === "pending",
       "bg-blue-100 text-blue-800": status === "scheduled",
-      "bg-red-100 text-red-800": status === "cancelled",
+      "bg-red-100 text-red-800": status === "canceled",
     }
   );
 

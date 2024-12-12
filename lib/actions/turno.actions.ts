@@ -7,6 +7,7 @@ import {
   TURNOS_COLLECTION_ID,
 } from "../appwrite.config";
 import { parseStringify } from "../utils";
+import { revalidatePath } from "next/cache";
 
 export const crearTurno = async (turno: CreateAppointmentParams) => {
   try {
@@ -74,3 +75,23 @@ export const getTurnosRecientes = async () => {
     console.error("An error occurred while fetching user:", error);
   }
 };
+
+export const actualizarTurno = async ({turnoId,userId,turno,type}: UpdateAppointmentParams) => {
+  try {
+    const updatedTurno = await databases.updateDocument(
+      DATABASE_ID!,
+      TURNOS_COLLECTION_ID!,
+      turnoId,
+      turno
+    );
+
+    if(!updatedTurno) {
+      throw new Error("Turno no actualizado");
+    }
+
+    revalidatePath("/admin");
+    return parseStringify(updatedTurno);
+  } catch (error) {
+    console.error("An error occurred while updating turno:", error);
+  }
+}

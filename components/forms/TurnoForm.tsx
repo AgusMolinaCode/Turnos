@@ -13,17 +13,23 @@ import SubmitButton from "../SubmitButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar, NotebookTabs } from "lucide-react";
 import { Abogados } from "@/constants";
-import { crearTurno } from "@/lib/actions/turno.actions";
+import { actualizarTurno, crearTurno } from "@/lib/actions/turno.actions";
 import { SelectItem } from "../ui/select";
 
 export const TurnoForm = ({
   userId,
   clienteId,
   type = "create",
+  turno,
+  setOpen,
 }: {
   userId: string;
   clienteId: string;
   type: "create" | "cancel" | "schedule";
+  turno?: Turno;
+  setOpen?: (open: boolean) => void;
+  status?: Status;
+  cancelationReason?: string;
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -33,11 +39,11 @@ export const TurnoForm = ({
   const form = useForm<z.infer<typeof TurnoFormValidation>>({
     resolver: zodResolver(TurnoFormValidation),
     defaultValues: {
-      primaryProfessional: "",
-      schedule: new Date(),
-      description: "",
-      notes: "",
-      cancelationReason: "",
+      primaryProfessional: turno?.primaryProfessional || "",
+      schedule: turno ? new Date(turno?.schedule!) : new Date(Date.now()),
+      description: turno?.description || "",
+      notes: turno?.notes || "",
+      cancelationReason: turno?.cancelationReason || "",
     },
   });
 
@@ -72,7 +78,32 @@ export const TurnoForm = ({
 
         if (turno) {
           form.reset();
-          router.push(`/clientes/${userId}/nuevo-turno/success?turnoId=${turno.$id}`);
+          router.push(
+            `/clientes/${userId}/nuevo-turno/success?turnoId=${turno.$id}`
+          );
+        }
+      } else {
+        const turnoToUpdate = {
+          userId,
+          turnoId: turno?.$id!,
+          turno: {
+            $id: turno?.$id!,
+            userId,
+            cliente: turno?.cliente!,
+            primaryProfessional: values?.primaryProfessional,
+            schedule: new Date(values?.schedule),
+            status: status as Status,
+            description: values?.description || turno?.description || "",
+            cancelationReason: values?.cancelationReason || null,
+          },
+          type,
+        };
+
+        const updateTurno = await actualizarTurno(turnoToUpdate);
+
+        if (updateTurno) {
+          setOpen && setOpen(false);
+          form.reset();
         }
       }
     } catch (error) {
@@ -121,44 +152,49 @@ export const TurnoForm = ({
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-1">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
-              <CustomFormField
-                fieldType={FormFieldType.SELECT}
-                control={form.control}
-                name="primaryProfessional"
-                label="Profesional"
-                placeholder="Selecciona un profesional"
-              >
-                {Abogados.map((abogado, i) => (
-                  <SelectItem key={abogado.name + i} value={abogado.name}>
-                    <div className="flex cursor-pointer items-center gap-2">
-                      <Image
-                        src={abogado.image}
-                        width={32}
-                        height={32}
-                        alt="abogado"
-                        className="rounded-full border border-dark-500"
-                      />
-                      <p>{abogado.name}</p>
-                    </div>
-                  </SelectItem>
-                ))}
-              </CustomFormField>
-
-              <CustomFormField
-                fieldType={FormFieldType.DATE_PICKER}
-                control={form.control}
-                name="schedule"
-                label="Fecha y Hora"
-                icon={Calendar}
-                iconAlt="calendar"
-                dateFormat="dd/MM/yyyy HH:mm"
-                showTimeSelect
-              />
-            </div>
-
             {type === "create" && (
-              <>
+              <section className="mb-12 space-y-4">
+                <h1 className="header">Nuevo Turno</h1>
+                <p className="text-dark-700">
+                  Solicita un nuevo turno en 10 segundos.
+                </p>
+              </section>
+            )}
+            {type !== "cancel" && (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                <CustomFormField
+                  fieldType={FormFieldType.SELECT}
+                  control={form.control}
+                  name="primaryProfessional"
+                  label="Profesional"
+                  placeholder="Selecciona un profesional"
+                >
+                  {Abogados.map((abogado, i) => (
+                    <SelectItem key={abogado.name + i} value={abogado.name}>
+                      <div className="flex cursor-pointer items-center gap-2">
+                        <Image
+                          src={abogado.image}
+                          width={32}
+                          height={32}
+                          alt="abogado"
+                          className="rounded-full border border-dark-500"
+                        />
+                        <p>{abogado.name}</p>
+                      </div>
+                    </SelectItem>
+                  ))}
+                </CustomFormField>
+
+                <CustomFormField
+                  fieldType={FormFieldType.DATE_PICKER}
+                  control={form.control}
+                  name="schedule"
+                  label="Fecha y Hora"
+                  icon={Calendar}
+                  iconAlt="calendar"
+                  dateFormat="dd/MM/yyyy HH:mm"
+                  showTimeSelect
+                />
                 <CustomFormField
                   fieldType={FormFieldType.TEXTAREA}
                   control={form.control}
@@ -176,7 +212,7 @@ export const TurnoForm = ({
                   icon={NotebookTabs}
                   iconAlt="notebook"
                 />
-              </>
+              </div>
             )}
 
             {type === "cancel" && (

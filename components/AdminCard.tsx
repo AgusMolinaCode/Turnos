@@ -2,22 +2,25 @@ import React from "react";
 import { LucideIcon } from "lucide-react";
 
 interface AdminCardProps {
-  count: number;
   type: "turnos" | "pending" | "canceled";
-  icon: LucideIcon;
+  count: number;
   label: string;
+  icon: LucideIcon;
 }
 
-const AdminCard = ({ count = 0, label, icon: Icon, type }: AdminCardProps) => {
+const AdminCard = ({ type, count, label, icon: Icon }: AdminCardProps) => {
   return (
-    <div className="bg-white shadow-md rounded-lg p-4 flex items-center space-x-4">
-      <div className="flex-shrink-0">
-        <Icon className="h-12 w-12 text-gray-500" />
+    <div className={`
+      p-4 rounded-xl flex items-center justify-between 
+      ${type === "turnos" && "bg-primary/10 text-primary"}
+      ${type === "pending" && "bg-yellow-500/10 text-yellow-500"}
+      ${type === "canceled" && "bg-destructive/10 text-destructive"}
+    `}>
+      <div className="space-y-2">
+        <h2 className="text-2xl font-bold">{count}</h2>
+        <p className="text-xs">{label}</p>
       </div>
-      <div>
-        <div className="text-xl font-bold text-gray-900">{count}</div>
-        <div className="text-sm font-medium text-gray-500">{label}</div>
-      </div>
+      <Icon className="w-8 h-8 opacity-50" />
     </div>
   );
 };

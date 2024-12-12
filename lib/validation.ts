@@ -60,7 +60,7 @@ export const CancelTurnoSchema = z.object({
   schedule: z.coerce.date(),
   notes: z.string().optional(),
   description: z.string().optional(),
-  cancellationReason: z
+  cancelationReason: z
     .string()
     .min(2, "El motivo debe tener al menos 2 caracteres")
     .max(500, "El motivo debe tener como máximo 500 caracteres"),
