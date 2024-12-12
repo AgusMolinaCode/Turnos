@@ -89,6 +89,8 @@ export const actualizarTurno = async ({turnoId,userId,turno,type}: UpdateAppoint
       throw new Error("Turno no actualizado");
     }
 
+    //TODO: enviar notificacion al cliente
+
     revalidatePath("/admin");
     return parseStringify(updatedTurno);
   } catch (error) {

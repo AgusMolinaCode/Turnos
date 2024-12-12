@@ -9,8 +9,7 @@ import { columns, Payment } from "@/components/table/Columns";
 
 const Page = async () => {
   const turnos = await getTurnosRecientes();
-  
-  // Calcula los contadores basados en el status
+
   const scheduledCount = turnos.documents.filter((turno: { status: string; }) => turno.status === "scheduled").length;
   const pendingCount = turnos.documents.filter((turno: { status: string; }) => turno.status === "pending").length;
   const canceledCount = turnos.documents.filter((turno: { status: string; }) => turno.status === "cancelled").length;
