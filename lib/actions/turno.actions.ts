@@ -91,9 +91,19 @@ export const actualizarTurno = async ({turnoId,userId,turno,type}: UpdateAppoint
 
     //TODO: enviar notificacion al cliente
 
+
     revalidatePath("/admin");
     return parseStringify(updatedTurno);
   } catch (error) {
     console.error("An error occurred while updating turno:", error);
   }
 }
+
+// export const sendWhatsappMessage = async (userId: string, message: string) => {
+//   try {
+//     const user = await databases.getDocument(DATABASE_ID!, TURNOS_COLLECTION_ID!, userId);
+//     const phone = user?.phone;
+//   } catch (error) {
+//     console.error("An error occurred while sending whatsapp message:", error);
+//   }
+// }
