@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===== CUSTOM UTILITIES */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
 /* =====  REACT-DATEPICKER OVERRIDES */
 .react-datepicker-wrapper.date-picker {
   display: flex;
