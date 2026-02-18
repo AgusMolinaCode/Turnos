@@ -14,8 +14,8 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Turnos",
-  description: "Registrate y pedí tu turno",
+  title: "Turnos | Gestión de Turnos",
+  description: "Sistema de gestión de turnos - Registrate y pedí tu turno fácilmente",
 };
 
 export default function RootLayout({
