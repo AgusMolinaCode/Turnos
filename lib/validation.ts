@@ -1,7 +1,7 @@
-import { de } from "date-fns/locale";
 import { z } from "zod";
 
-export const UserFormValidation = z.object({
+// Campos base compartidos entre User y Client
+const BaseUserSchema = z.object({
   name: z
     .string()
     .min(2, "El nombre debe tener al menos 2 caracteres")
@@ -12,15 +12,9 @@ export const UserFormValidation = z.object({
     .refine((phone) => /^\+\d{10,15}$/.test(phone), "Número de teléfono inválido"),
 });
 
-export const ClientFormValidation = z.object({
-  name: z
-    .string()
-    .min(2, "El nombre debe tener al menos 2 caracteres")
-    .max(50, "El nombre debe tener como máximo 50 caracteres"),
-  email: z.string().email("Correo electrónico inválido"),
-  phone: z
-    .string()
-    .refine((phone) => /^\+\d{10,15}$/.test(phone), "Número de teléfono inválido"),
+export const UserFormValidation = BaseUserSchema;
+
+export const ClientFormValidation = BaseUserSchema.extend({
   birthDate: z.coerce.date(),
   primaryProfessional: z.string().min(2, "Selecciona al menos un profesional"),
   documentoDni: z.string().min(7, "El DNI debe tener al menos 7 caracteres"),
