@@ -25,12 +25,14 @@ interface TurnosResponse {
 }
 
 // Constantes
+/** Mapeo de estados de turno a nombres de contadores */
 const STATUS_COUNT_MAP: Record<string, keyof typeof INITIAL_COUNTS> = {
   scheduled: "turnos",
   pending: "pending",
   canceled: "canceled",
 };
 
+/** Contadores iniciales para el resumen de turnos */
 const INITIAL_COUNTS = {
   turnos: 0,
   pending: 0,
