@@ -1,5 +1,10 @@
 import { z } from "zod";
 
+// Helper para validar que la fecha no sea en el pasado
+const futureDateSchema = z.coerce.date().refine((date) => date > new Date(), {
+  message: "La fecha del turno no puede ser en el pasado",
+});
+
 // Campos base compartidos entre User y Client
 const BaseUserSchema = z.object({
   name: z
@@ -32,7 +37,7 @@ export const ClientFormValidation = BaseUserSchema.extend({
 
 export const CreateTurnoSchema = z.object({
   primaryProfessional: z.string().min(2, "Selecciona al menos un profesional"),
-  schedule: z.coerce.date(),
+  schedule: futureDateSchema,
   description: z
     .string()
     .min(2, "La descripción debe tener al menos 2 caracteres")
@@ -43,7 +48,7 @@ export const CreateTurnoSchema = z.object({
 
 export const ScheduleTurnoSchema = z.object({
   primaryProfessional: z.string().min(2, "Selecciona al menos un profesional"),
-  schedule: z.coerce.date(),
+  schedule: futureDateSchema,
   description: z.string().optional(),
   notes: z.string().optional(),
   cancelationReason: z.string().optional(),
@@ -51,7 +56,7 @@ export const ScheduleTurnoSchema = z.object({
 
 export const CancelTurnoSchema = z.object({
   primaryProfessional: z.string().min(2, "Selecciona al menos un profesional"),
-  schedule: z.coerce.date(),
+  schedule: futureDateSchema,
   notes: z.string().optional(),
   description: z.string().optional(),
   cancelationReason: z
