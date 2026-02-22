@@ -69,6 +69,17 @@ function handleAppwriteError(error: unknown, operation: string): never {
   throw new TurnoError(`${operation} falló: Error desconocido`);
 }
 
+// Helper para contar turnos por estado
+function countTurnosByStatus(turnos: Turno[]) {
+  return turnos.reduce((acc, turno) => {
+    const countKey = STATUS_COUNT_MAP[turno.status];
+    if (countKey) {
+      acc[countKey] += 1;
+    }
+    return acc;
+  }, { ...INITIAL_COUNTS });
+}
+
 export const crearTurno = async (turno: CreateAppointmentParams): Promise<string | null> => {
   try {
     if (!turno) {
@@ -112,13 +123,7 @@ export const getTurnosRecientes = async (): Promise<string | null> => {
       [Query.orderDesc("$createdAt")]
     );
 
-    const counts = (turnos.documents as Turno[]).reduce((acc, turno) => {
-      const countKey = STATUS_COUNT_MAP[turno.status];
-      if (countKey) {
-        acc[countKey] += 1;
-      }
-      return acc;
-    }, { ...INITIAL_COUNTS });
+    const counts = countTurnosByStatus(turnos.documents as Turno[]);
 
     const data: TurnosResponse = {
       count: turnos.total,
@@ -128,8 +133,7 @@ export const getTurnosRecientes = async (): Promise<string | null> => {
 
     return parseStringify(data);
   } catch (error) {
-    console.error("An error occurred while fetching turnos:", error);
-    return null;
+    handleAppwriteError(error, "getTurnosRecientes");
   }
 };
 
