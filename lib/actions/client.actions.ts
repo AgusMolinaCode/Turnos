@@ -14,6 +14,35 @@ import {
 import { parseStringify } from "../utils";
 import { InputFile } from "node-appwrite/file";
 
+// Clase de error personalizada para Appwrite
+class AppwriteError extends Error {
+  code?: number;
+  
+  constructor(message: string, code?: number) {
+    super(message);
+    this.name = 'AppwriteError';
+    this.code = code;
+  }
+}
+
+// Helper para manejar errores de Appwrite
+function handleAppwriteError(error: unknown, context: string): never {
+  console.error(`Error in ${context}:`, error);
+  
+  if (error instanceof AppwriteError) {
+    throw error;
+  }
+  
+  if (typeof error === 'object' && error !== null && 'code' in error) {
+    throw new AppwriteError(
+      `${context} failed`,
+      (error as { code: number }).code
+    );
+  }
+  
+  throw new AppwriteError(`${context} failed: ${String(error)}`);
+}
+
 // CREATE APPWRITE USER
 export const createUser = async (user: CreateUserParams) => {
   try {
@@ -29,14 +58,14 @@ export const createUser = async (user: CreateUserParams) => {
     return parseStringify(newuser);
   } catch (error: any) {
     // Check existing user
-    if (error && error?.code === 409) {
+    if (error?.code === 409) {
       const existingUser = await users.list([
         Query.equal("email", [user.email]),
       ]);
 
       return existingUser.users[0];
     }
-    console.error("An error occurred while creating a new user:", error);
+    handleAppwriteError(error, "createUser");
   }
 };
 
@@ -46,7 +75,7 @@ export const getUser = async (userId: string) => {
 
     return parseStringify(user);
   } catch (error) {
-    console.error("An error occurred while fetching user:", error);
+    handleAppwriteError(error, "getUser");
   }
 };
 
@@ -80,7 +109,7 @@ export const registerUser = async ({
 
     return parseStringify(newClient);
   } catch (error) {
-    console.error("An error occurred while registering user:", error);
+    handleAppwriteError(error, "registerUser");
   }
 };
 
@@ -94,10 +123,7 @@ export const getClient = async (userId: string) => {
 
     return parseStringify(clients.documents[0]);
   } catch (error) {
-    console.error(
-      "An error occurred while retrieving the patient details:",
-      error
-    );
+    handleAppwriteError(error, "getClient");
   }
 };
 
