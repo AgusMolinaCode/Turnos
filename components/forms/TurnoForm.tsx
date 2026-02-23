@@ -4,7 +4,7 @@ import { z } from "zod";
 import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { Form } from "@/components/ui/form";
 import { getTurnoFormValidation } from "@/lib/validation";
@@ -15,6 +15,45 @@ import { Calendar, NotebookTabs } from "lucide-react";
 import { Abogados } from "@/constants";
 import { actualizarTurno, crearTurno } from "@/lib/actions/turno.actions";
 import { SelectItem } from "../ui/select";
+
+// Helpers para evitar código duplicado
+const getButtonLabel = (type: "create" | "cancel" | "schedule"): string => {
+  const labels = {
+    cancel: "Cancelar Turno",
+    schedule: "Agendar Turno",
+    create: "Pedir Turno",
+  };
+  return labels[type];
+};
+
+const getFormTitle = (type: "create" | "cancel" | "schedule"): string => {
+  const titles = {
+    cancel: "Cancelar Turno",
+    schedule: "Agendar Turno",
+    create: "Crear Turno",
+  };
+  return titles[type];
+};
+
+const getFormDescription = (type: "create" | "cancel" | "schedule"): string => {
+  const descriptions = {
+    cancel: "cancelar",
+    schedule: "agendar",
+    create: "crear",
+  };
+  return descriptions[type];
+};
+
+const getStatusFromType = (type: "create" | "cancel" | "schedule"): Status => {
+  switch (type) {
+    case "schedule":
+      return "scheduled";
+    case "cancel":
+      return "cancelled";
+    default:
+      return "pending";
+  }
+};
 
 export const TurnoForm = ({
   userId,
@@ -47,21 +86,14 @@ export const TurnoForm = ({
     },
   });
 
+  // Memoizar valores derivados para evitar recálculos
+  const status = useMemo(() => getStatusFromType(type), [type]);
+  const buttonLabel = useMemo(() => getButtonLabel(type), [type]);
+  const formTitle = useMemo(() => getFormTitle(type), [type]);
+  const formDescription = useMemo(() => getFormDescription(type), [type]);
+
   const onSubmit = async (values: z.infer<typeof TurnoFormValidation>) => {
     setIsLoading(true);
-
-    let status;
-    switch (type) {
-      case "schedule":
-        status = "scheduled";
-        break;
-      case "cancel":
-        status = "cancelled";
-        break;
-      default:
-        status = "pending";
-        break;
-    }
 
     try {
       if (type === "create" && clienteId) {
@@ -72,14 +104,15 @@ export const TurnoForm = ({
           schedule: new Date(values.schedule),
           description: values.description || "",
           notes: values.notes || "",
-          status: status as Status,
+          status,
         };
-        const turno = await crearTurno(clienteData);
+        // Usar nombre diferente para evitar colisión con prop 'turno'
+        const nuevoTurno = await crearTurno(clienteData);
 
-        if (turno) {
+        if (nuevoTurno) {
           form.reset();
           router.push(
-            `/clientes/${userId}/nuevo-turno/success?turnoId=${turno.$id}`
+            `/clientes/${userId}/nuevo-turno/success?turnoId=${nuevoTurno.$id}`
           );
         }
       } else {
@@ -92,7 +125,7 @@ export const TurnoForm = ({
             cliente: turno?.cliente!,
             primaryProfessional: values?.primaryProfessional,
             schedule: new Date(values?.schedule),
-            status: status as Status,
+            status,
             description: values?.description || turno?.description || "",
             cancelationReason: values?.cancelationReason || null,
           },
@@ -131,21 +164,10 @@ export const TurnoForm = ({
       <CardHeader>
         <CardTitle>
           <h2 className="text-2xl flex items-center gap-2 font-bold text-dark-800">
-            <NotebookTabs />{" "}
-            {type === "create"
-              ? "Crear Turno"
-              : type === "cancel"
-              ? "Cancelar Turno"
-              : "Agendar Turno"}
+            <NotebookTabs /> {formTitle}
           </h2>
           <p className="text-gray-500 font-normal mt-3">
-            Completa todos los datos para{" "}
-            {type === "create"
-              ? "crear"
-              : type === "cancel"
-              ? "cancelar"
-              : "agendar"}{" "}
-            tu turno
+            Completa todos los datos para {formDescription} tu turno
           </p>
         </CardTitle>
       </CardHeader>
