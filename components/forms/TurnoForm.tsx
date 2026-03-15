@@ -146,19 +146,6 @@ export const TurnoForm = ({
     setIsLoading(false);
   };
 
-  let buttonLabel;
-  switch (type) {
-    case "cancel":
-      buttonLabel = "Cancelar Turno";
-      break;
-    case "schedule":
-      buttonLabel = "Agendar Turno";
-      break;
-    default:
-      buttonLabel = "Pedir Turno";
-      break;
-  }
-
   return (
     <Card className="max-w-[640px] mx-auto bg-white/90 dark:bg-black/50 backdrop-blur-md border border-white/20 shadow-lg">
       <CardHeader>
